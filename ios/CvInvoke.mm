@@ -272,6 +272,26 @@
     return [paramTypesStr componentsSeparatedByString:@","];
 }
 
+-(NSArray*)findContours:(NSString*)in mat:(NSDictionary*)mat mode:(int)mode method:(int)method point:(NSDictionary*)point out:(NSString*)out {
+    int matIndex = [(NSNumber*)[mat valueForKey:@"matIndex"] intValue];
+    Mat dMat = [MatManager.sharedMgr matAtIndex:matIndex];
+    double xval = [(NSNumber*)[point valueForKey:@"x"] doubleValue];
+    double yval = [(NSNumber*)[point valueForKey:@"y"] doubleValue];
+    CvPoint dPoint(xval, yval);
+    std::vector<ContourData> results = findContoursMethod(dMat, mode, method, dPoint);
+    
+    NSArray *arr = [NSArray array];
+    for(ContourData detail : results) {
+        arr = [arr arrayByAddingObject:@{
+            @"area": [NSNumber numberWithDouble:detail.area],
+            @"radius": [NSNumber numberWithDouble:detail.radius],
+            @"centerX": [NSNumber numberWithDouble:detail.centerX],
+            @"centerY": [NSNumber numberWithDouble:detail.centerY],
+        }];
+    }
+    return arr;
+}
+
 -(int)invokeCvMethod:(NSString*)in func:(NSString*)func params:(NSDictionary*)params out:(NSString*)out {
    
    int result = -1;

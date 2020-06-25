@@ -38,6 +38,8 @@ enum NumberType {
 
 -(int)invokeCvMethods:(NSDictionary*)cvInvokeMap;
 
+-(NSArray*)findContours:(NSString*)in mat:(NSDictionary*)mat mode:(int)mode method:(int)method point:(NSDictionary*)point out:(NSString*)out;
+
 -(int)invokeCvMethod:(NSString*)in func:(NSString*)func params:(NSDictionary*)params out:(NSString*)out;
 
 -(NSArray*)parseInvokeMap:(NSDictionary*)cvInvokeMap;

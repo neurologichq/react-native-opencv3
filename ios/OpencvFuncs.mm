@@ -968,8 +968,31 @@ std::tuple<std::tuple<MatType,MatType,IntType>,std::tuple<MatType,MatType>,std::
 };
  */
 
+
 // Note: std::visit or something similar may be able to be used to get rid of this huuuuge ftn.  I did not use it because it is not supported until iOS 12 ...
 // if you figure out a way around this using variable arguments or something go for it!
+std::vector<ContourData> findContoursMethod(Mat dMat, int mode, int method, cv::Point point) {
+    std::vector<Mat> contours;
+    std::vector<ContourData> contourDatas;
+    findContours(dMat, contours, mode, method, point);
+    for(Mat contour : contours) {
+        double area = contourArea(contour);
+        cv::Rect bounding_box = boundingRect(contour);
+        double extend = area / (bounding_box.width * bounding_box.height);
+        if (extend > 0.8) {
+            continue;
+        }
+        Moments m = moments(contour);
+        if (m.m00 != 0) {
+            double radius = 0.25 * (bounding_box.width + bounding_box.height);
+            double centerX =(int)(m.m10/m.m00);
+            double centerY =(int)(m.m01/m.m00);
+            contourDatas.push_back(contourData(area, radius, centerX, centerY));
+        }
+    }
+    return contourDatas;
+}
+
 // TODO: return arbitrary data in an NSArray instead of just one Mat ...
 Mat callOpencvMethod(int index, std::vector<ocvtypes>& args, Mat dMat) {
 

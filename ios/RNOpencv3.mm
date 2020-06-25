@@ -91,6 +91,12 @@ RCT_EXPORT_METHOD(invokeMethod:(NSString*)func params:(NSDictionary*)params) {
     [invoker invokeCvMethod:nil func:func params:params out:nil];
 }
 
+RCT_EXPORT_METHOD(findContours:(NSDictionary*)mat mode:(int)mode method:(int)method point:(NSDictionary*)point resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    CvInvoke *invoker = [[CvInvoke alloc] init];
+    NSArray *result = [invoker findContours:nil mat:mat mode:mode method:method point:point out:nil];
+    resolve(result);
+}
+
 RCT_EXPORT_METHOD(invokeInOutMethod:(NSString*)in func:(NSString*)func params:(NSDictionary*)params out:(NSString*)out) {
     CvInvoke *invoker = [[CvInvoke alloc] init];
     [invoker invokeCvMethod:in func:func params:params out:out];

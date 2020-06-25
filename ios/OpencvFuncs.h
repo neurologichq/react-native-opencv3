@@ -80,6 +80,27 @@ public:
     cv::Rect r;
 };
 
+typedef struct ContourData
+{
+    double area;
+    double radius;
+    double centerX;
+    double centerY;
+}
+ContourData;
+
+CV_INLINE ContourData contourData( double area, double radius, double centerX, double centerY )
+{
+    ContourData p;
+    p.area = area;
+    p.radius = radius;
+    p.centerX = centerX;
+    p.centerY = centerY;
+    return p;
+}
+
+std::vector<ContourData> findContoursMethod(Mat dMat, int mode, int method, cv::Point point);
+
 Mat callOpencvMethod(int index, std::vector<ocvtypes>& args, Mat dMat = Mat());
 
 #endif /* OpencvFuncs_h */
