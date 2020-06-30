@@ -976,19 +976,25 @@ std::vector<ContourData> findContoursMethod(Mat dMat, int mode, int method, cv::
     std::vector<ContourData> contourDatas;
     findContours(dMat, contours, mode, method, point);
     for(Mat contour : contours) {
-        double area = contourArea(contour);
-        cv::Rect bounding_box = boundingRect(contour);
-        double extend = area / (bounding_box.width * bounding_box.height);
-        if (extend > 0.8) {
+        if (contour.rows < 5) {
             continue;
         }
-        Moments m = moments(contour);
-        if (m.m00 != 0) {
-            double radius = 0.25 * (bounding_box.width + bounding_box.height);
-            double centerX =(int)(m.m10/m.m00);
-            double centerY =(int)(m.m01/m.m00);
-            contourDatas.push_back(contourData(area, radius, centerX, centerY));
+        RotatedRect ellipse = fitEllipse(contour);
+        double widthRadius = ellipse.size.width / 2;
+        double heightRadius = ellipse.size.height / 2;
+        if (widthRadius <= 1 || heightRadius <= 1) {
+            continue;
         }
+        // filter eclipse with too extend
+        if (widthRadius / heightRadius < 0.7 || heightRadius / widthRadius < 0.7 ) {
+            continue;
+        }
+        double area = contourArea(contour);
+        double fillRatio = area / (3.14 * widthRadius * heightRadius);
+        if (fillRatio < 0.9) {
+            continue;
+        }
+        contourDatas.push_back(contourData(area, ellipse.center.x, ellipse.center.y, widthRadius, heightRadius));
     }
     return contourDatas;
 }

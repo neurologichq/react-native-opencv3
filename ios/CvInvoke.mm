@@ -284,9 +284,10 @@
     for(ContourData detail : results) {
         arr = [arr arrayByAddingObject:@{
             @"area": [NSNumber numberWithDouble:detail.area],
-            @"radius": [NSNumber numberWithDouble:detail.radius],
             @"centerX": [NSNumber numberWithDouble:detail.centerX],
             @"centerY": [NSNumber numberWithDouble:detail.centerY],
+            @"minRadius": [NSNumber numberWithDouble:detail.minRadius],
+            @"maxRadius": [NSNumber numberWithDouble:detail.maxRadius],
         }];
     }
     return arr;
