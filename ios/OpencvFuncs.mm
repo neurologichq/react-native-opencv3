@@ -994,7 +994,8 @@ std::vector<ContourData> findContoursMethod(Mat dMat, int mode, int method, cv::
         if (fillRatio < 0.9) {
             continue;
         }
-        contourDatas.push_back(contourData(area, ellipse.center.x, ellipse.center.y, widthRadius, heightRadius));
+        double circumference = arcLength(contour, true);
+        contourDatas.push_back(contourData(area, ellipse.center.x, ellipse.center.y, widthRadius, heightRadius, circumference));
     }
     return contourDatas;
 }

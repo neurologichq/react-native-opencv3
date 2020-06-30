@@ -288,6 +288,7 @@
             @"centerY": [NSNumber numberWithDouble:detail.centerY],
             @"minRadius": [NSNumber numberWithDouble:detail.minRadius],
             @"maxRadius": [NSNumber numberWithDouble:detail.maxRadius],
+            @"circumference": [NSNumber numberWithDouble:detail.circumference],
         }];
     }
     return arr;
