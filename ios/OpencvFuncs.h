@@ -87,15 +87,17 @@ typedef struct ContourData
     double centerY;
     double minRadius;
     double maxRadius;
+    double circumference;
 }
 ContourData;
 
-CV_INLINE ContourData contourData( double area, double centerX, double centerY, double width, double height )
+CV_INLINE ContourData contourData( double area, double centerX, double centerY, double width, double height, double circumference )
 {
     ContourData p;
     p.area = area;
     p.centerX = centerX;
     p.centerY = centerY;
+    p.circumference = circumference;
     if (width < height) {
         p.minRadius = width;
         p.maxRadius = height;
