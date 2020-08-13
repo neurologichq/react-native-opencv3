@@ -13,6 +13,7 @@
 // There may be a better way to do these three things by encapsulating them in an array of structs
 // still I like its simplicity ...
 std::vector<std::string> Functions = {
+    "drop",
     "cvtColor", // beginning ImgProc functions
     "cvtColor",
     "line",
@@ -314,6 +315,7 @@ std::vector<std::string> Functions = {
 };
 
 std::vector<std::string> types = {
+    "Mat,OutMat,int,int,int,int", // beginning ImgProc functions
     "Mat,OutMat,int", // beginning ImgProc functions
     "Mat,OutMat,int,int",
     "OutMat,Point,Point,Scalar",
@@ -615,6 +617,7 @@ std::vector<std::string> types = {
 };
 
 typedef enum fns {
+    DROP,
     CVTCOLOR, // beginning ImgProc functions
     CVTCOLOR2,
     LINE,
@@ -989,7 +992,7 @@ std::vector<ContourData> findContoursMethod(Mat dMat, int mode, int method, cv::
         if (widthRadius / heightRadius < 0.7 || heightRadius / widthRadius < 0.7 ) {
             continue;
         }
-        double area = contourArea(contour, true);
+        double area = contourArea(contour);
         double fillRatio = area / (3.14 * widthRadius * heightRadius);
         if (fillRatio < 0.9) {
             continue;
@@ -1004,6 +1007,17 @@ std::vector<ContourData> findContoursMethod(Mat dMat, int mode, int method, cv::
 Mat callOpencvMethod(int index, std::vector<ocvtypes>& args, Mat dMat) {
 
     switch (index) {
+        case DROP: {
+            auto p1 = args[0].m;
+            auto p2 = args[1].m;
+            auto p3 = args[2].i;
+            auto p4 = args[3].i;
+            auto p5 = args[4].i;
+            auto p6 = args[5].i;
+            cv::Rect crop_region(p3, p4, p5, p6);
+            p2 = p1(crop_region);
+            return p2;
+        }
         // Beginning of supported ImgProc functions ...
         case CVTCOLOR: {
             // auto p1 = castmat(&args[0]);
