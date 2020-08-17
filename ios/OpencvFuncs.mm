@@ -992,7 +992,7 @@ std::vector<ContourData> findContoursMethod(Mat dMat, int mode, int method, cv::
         if (widthRadius / heightRadius < 0.7 || heightRadius / widthRadius < 0.7 ) {
             continue;
         }
-        double area = contourArea(contour);
+        double area = contourArea(contour, true);
         double fillRatio = area / (3.14 * widthRadius * heightRadius);
         if (fillRatio < 0.9) {
             continue;
